@@ -30,8 +30,7 @@ For example:
 ```bash
 newman run [collection_name.json] -e [enviroment_name.json] -r html --reporter-html-export [full_path_to_file.html]
 
-```bash
-newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html
+newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html```
 
 [reporteHtml.html](./rsc/reporteHtml.html)
 
