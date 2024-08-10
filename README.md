@@ -1,4 +1,4 @@
-# Testin-IAM-with-Postman
+# Testing-IAM-with-Postman
 This project includes automated testing performed with Postman. Newman is also used.
 
 To perform the following steps, you should use [IAM.postman_collection.json](IAM.postman_collection.json) and [IAM.postman_environment.json](IAM.postman_environment.json) files.
