@@ -97,10 +97,6 @@
 								"value": "application/json"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
@@ -624,10 +620,6 @@
 								"value": "application/json"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
@@ -742,10 +734,6 @@
 								"value": "application/json"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
-							},
-							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
@@ -858,10 +846,6 @@
 							{
 								"key": "accept",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
 							},
 							{
 								"key": "Content-Type",
@@ -1147,10 +1131,6 @@
 							{
 								"key": "accept",
 								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MTE1MzYxOTY3MiIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYxMTUzNiwiZXhwIjoxNzIzMDQzNTM2fQ.tj8gqMhmB7ZgOwMSNPtZKe-BSIfiZw594As6eCCyPiE"
 							},
 							{
 								"key": "Content-Type",
