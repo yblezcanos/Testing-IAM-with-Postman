@@ -27,9 +27,13 @@ By adding the `-r` command to the end of the line plus one of the following opti
 - `htmlextra` this reporter provides rich HTML output that offers a more detailed and stylized view of the results of the collection run. 
 
 For example:
-```bash
-newman run [collection_name.json] -e [enviroment_name.json] -r html --reporter-html-export [full_path_to_file.html]
 
+```markdown
+```bash
+   newman run [collection_name.json] -e [environment_name.json] -r html --reporter-html-export [full_path_to_file.html]
+
+```markdown
+```bash   
 newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html```
 
 [reporteHtml.html](./rsc/reporteHtml.html)
