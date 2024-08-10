@@ -1207,7 +1207,8 @@
 					"let keyName = \"iam_events_ids\";\r",
 					"pm.collectionVariables.set(keyName, pm.collectionVariables.get(keyName) || \"[]\");\r",
 					"\r",
-					"let uri = pm.collectionVariables.get('base_url')\r",
+					"let uri = pm.environment.get('base_url')\r",
+					"//console.log(\"111111\" + uri)\r",
 					"pm.sendRequest({\r",
 					"    url: uri + '/v1/oauth/token',\r",
 					"    method: 'POST',\r",
@@ -1218,17 +1219,17 @@
 					"        mode: \"urlencoded\",\r",
 					"        urlencoded: [\r",
 					"            { key: \"grant_type\", value: \"password\" },\r",
-					"            { key: \"username\", value: pm.collectionVariables.get('user') },\r",
-					"            { key: \"password\", value: pm.collectionVariables.get('pass') },\r",
+					"            { key: \"username\", value: pm.environment.get('user') },\r",
+					"            { key: \"password\", value: pm.environment.get('pass') },\r",
 					"            { key: \"scope\", value: \"6\"}\r",
 					"        ]\r",
 					"    }\r",
 					"}, function (err, res) {\r",
-					"    console.log(\">>> ACCESS-TOKEN\");\r",
+					"    //console.log(\">>> ACCESS-TOKEN\");\r",
 					"    if (!res?.responseSize) return null;\r",
 					"    let jsonData = res.json();\r",
 					"    if (!jsonData) return null;\r",
-					"    jsonData?.access_token && pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+					"    jsonData?.access_token && pm.environment.set(\"access_token\", jsonData.access_token);\r",
 					"    /*console.log(\">>> error\", err);\r",
 					"    onsole.log(\">>> access_token-v\", pm.collectionVariables.get('access_token'));\r",
 					"    onsole.log(\">>> access_token-l\", jsonData?.access_token);*/\r",
@@ -1249,17 +1250,20 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "https://auth-dev.qa.ewas.aero"
+			"value": "https://auth-dev.qa.ewas.aero",
+			"disabled": true
 		},
 		{
 			"key": "user",
 			"value": "amembrides",
-			"type": "string"
+			"type": "string",
+			"disabled": true
 		},
 		{
 			"key": "pass",
 			"value": "Zaqwsx-123456",
-			"type": "string"
+			"type": "string",
+			"disabled": true
 		},
 		{
 			"key": "eventId",
@@ -1295,7 +1299,8 @@
 		},
 		{
 			"key": "access_token",
-			"value": ""
+			"value": "",
+			"disabled": true
 		}
 	]
 }
