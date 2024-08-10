@@ -26,11 +26,21 @@ By adding the `-r` command to the end of the line plus one of the following opti
 - `json` generates a report in JSON format, saved as report.json.
 - `htmlextra` this reporter provides rich HTML output that offers a more detailed and stylized view of the results of the collection run. 
 
-For example:```newman run [collection_name.json] -e [environment_name.json] -r html --reporter-html-export [full_path_to_file.html]```
-```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html```[reporteHtml.html](./rsc/reporteHtml.html)
-```newman run [collection_name.json] -e [enviroment_name.json] -r json --reporter-json-export [full_path_to_file.json]``````newman run IAM.postman_collection.json -e IAM.postman_environment.json -r json --reporter-json-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportJson.json```
-[reporteJson.json](./rsc/reportJson.json)```newman run [collection_name.json] -e [enviroment_name.json] -r htmlextra --reporter-htmlextra-export [full_path_to_file.html]```
-```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r htmlextra --reporter-htmlextra-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtmlExtra.html```[reporteHtmlExtra](./rsc/reportHtmlExtra.html)
+###For example:
+
+[reporteHtml.html](./rsc/reporteHtml.html)
+```newman run [collection_name.json] -e [environment_name.json] -r html --reporter-html-export [full_path_to_file.html]```
+
+```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html```
+
+[reporteJson.json](./rsc/reportJson.json)
+```newman run [collection_name.json] -e [enviroment_name.json] -r json --reporter-json-export [full_path_to_file.json]```
+
+```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r json --reporter-json-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportJson.json```
+
+[reporteHtmlExtra](./rsc/reportHtmlExtra.html)
+```newman run [collection_name.json] -e [enviroment_name.json] -r htmlextra --reporter-htmlextra-export [full_path_to_file.html]```
+```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r htmlextra --reporter-htmlextra-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtmlExtra.html```
 
 
 
