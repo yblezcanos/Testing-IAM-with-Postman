@@ -1,0 +1,1301 @@
+{
+	"info": {
+		"_postman_id": "f94aa40c-6329-488f-9d27-829bfe01f62e",
+		"name": "IAM",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36701025"
+	},
+	"item": [
+		{
+			"name": "event",
+			"item": [
+				{
+					"name": "[Create]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let eventId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"eventId\", eventId);\r",
+									"    //console.log(\"eventId: \"+ eventId);\r",
+									"    pm.expect(eventId).to.not.be.null;\r",
+									"    pm.expect(eventId).to.not.be.undefined;\r",
+									"});\r",
+									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"name\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAt\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAt\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iam_events_ids\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    \r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://auth-dev.qa.ewas.aero/v1/event' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 134905,\r\n  \"name\": \"onAsLoginFailure\",\r\n  \"description\": \"The authentication process fails\",\r\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\r\n  \"status\": 1,\r\n  \"created_at\": \"2024-04-18 12:19:52\",\r\n  \"updated_at\": \"2024-04-19 06:19:50\",\r\n  \"group\": \"user\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "[List]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"/*// Obtener la respuesta en formato JSON",
+									"let jsonResponse = pm.response.json();",
+									"",
+									"// Obtener los IDs de la respuesta (ajusta el acceso según la estructura de tu respuesta)",
+									"let responseIds = jsonResponse.data.map(item => item.id); // Suponiendo que cada item tiene una propiedad `id`",
+									"console.log(\"ids obtenidos\" + responseIds);",
+									"",
+									"// Obtener los IDs esperados desde la variable de colección",
+									"let expectedIds = JSON.parse(pm.collectionVariables.get(\"iam_events_ids\"));",
+									"console.log(\"id almacenados\" + expectedIds);",
+									"",
+									"// Verificar que todos los IDs esperados estén contenidos en los IDs de la respuesta",
+									"let allIdsPresent = expectedIds.every(id => responseIds.includes(id));",
+									"console.log(\"allIdsPresent\" + allIdsPresent);",
+									"",
+									"// Prueba para asegurar que todos los IDs esperados están en la respuesta",
+									"pm.test(\"All expected IDs are in the response\", function() {",
+									"    pm.expect(allIdsPresent).to.be.true;",
+									"});",
+									"",
+									"// Imprimir un mensaje en la consola para mayor claridad (opcional)",
+									"if (!allIdsPresent) {",
+									"    console.log(\"IDs faltantes:\", expectedIds.filter(id => !responseIds.includes(id)));",
+									"}*/"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/event",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "[List :id]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verifying Name is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('name');",
+									"    let currentName = jsonData.name;",
+									"    pm.expect(currentName).to.be.an('string');",
+									"    pm.expect(currentName.length > 1).eq(true);",
+									"    let expectedName = pm.collectionVariables.get(\"name\");",
+									"    pm.expect(currentName).to.eql(expectedName);",
+									"    //console.log(\"Current value is \"+currentName+ \" and the expected value is \"+ expectedName)",
+									"});",
+									"",
+									"pm.test(\"Verifying Id is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    let currentID = jsonData.id;",
+									"    pm.expect(currentID).to.not.be.null;",
+									"    pm.expect(currentID).to.not.be.undefined;",
+									"    let expectedId = pm.collectionVariables.get(\"eventId\");",
+									"    pm.expect(currentID).to.eql(expectedId);",
+									"    //console.log(\"Current id is \"+currentID+ \" and the expected id is \"+ expectedId);",
+									"});",
+									"",
+									"pm.test(\"Verifying created_at is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('created_at');",
+									"    let currentCreatedAt = new Date(jsonData.created_at).toISOString().slice(0, 19) + 'Z';",
+									"    let iso8601Regex = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/;",
+									"    pm.expect(currentCreatedAt).to.match(iso8601Regex);",
+									"    let expectedCreatedAt = pm.collectionVariables.get(\"createdAt\");",
+									"    expectedCreatedAt = new Date(expectedCreatedAt).toISOString().slice(0, 19) + 'Z';",
+									"    pm.expect(currentCreatedAt).to.eql(expectedCreatedAt);",
+									"});",
+									"",
+									"pm.test(\"Verifying updated_at is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('updated_at');",
+									"    let currentUpdatedAt = new Date(jsonData.updated_at).toISOString().slice(0, 19) + 'Z';",
+									"    //console.log(\"obtenida\" + currentUpdatedAt);",
+									"    let expectedUpdatedAt = pm.collectionVariables.get(\"updatedAt\");",
+									"    expectedUpdatedAt = new Date(expectedUpdatedAt).toISOString().slice(0, 19) + 'Z';",
+									"    //console.log(\"esperada\" + expectedUpdatedAt);",
+									"    pm.expect(currentUpdatedAt).to.eql(expectedUpdatedAt);",
+									"    //console.log(\"Current updated_at is \"+currentUpdatedAt+ \" and the expected updated_at is \"+ expectedUpdatedAt);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/event/{{eventId}}?format=full",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"{{eventId}}"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "full"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "[Update :id]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"updated_at was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newUpdatedAtS = jsonData.updated_at;",
+									"    let newUpdatedAt = new Date(newUpdatedAtS);",
+									"    //console.log(\"newUpdatedAt \"+newUpdatedAt);",
+									"    let updatedAtS = pm.collectionVariables.get(\"updatedAt\");",
+									"    let updatedAt = new Date(updatedAtS);",
+									"    //console.log(\"updatedAt \"+updatedAt);",
+									"    pm.expect(updatedAt.getTime()).to.be.lessThan(newUpdatedAt.getTime());",
+									"    //pm.expect(newUpdatedAt).to.not.be.eql(updatedAt);",
+									"});",
+									"",
+									"pm.test(\"Name was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newName = jsonData.name;",
+									"    let collLastName = pm.collectionVariables.get(\"name\");",
+									"    pm.expect(newName).to.not.be.eql(collLastName);",
+									"    //console.log(\"New last name is \"+newName+\" and Old last name is \"+collLastName);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"name\": \"update put:id\",\n  \"description\": \"The authentication process fails\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"{{$randomDateFuture}}\",\n  \"group\": \"user\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event/{{eventId}}?format=full",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"{{eventId}}"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "full"
+								}
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[DELETE :id]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Dynamic delete action for existent target with status code is 200\", function () {",
+									"    if(pm.response.responseSize) {",
+									"        let jsonData = pm.response.json(); ",
+									"        let id = pm.collectionVariables.get(\"eventId\");",
+									"",
+									"        pm.response.to.have.status(200);",
+									"        ",
+									"        pm.expect(jsonData).to.be.an('object');",
+									"        pm.expect(jsonData.id).eq(id);",
+									"        pm.expect(jsonData.name).to.be.an('string');",
+									"        pm.expect(jsonData.description).to.be.an('string');",
+									"        pm.expect(jsonData.description.length > 1).eq(true);",
+									"        pm.expect(jsonData.description).to.not.be.empty;",
+									"    }else{",
+									"        pm.expect(pm.response.code).to.not.equal(200);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Dynamic delete action for not existent target with status code 404\", function () {",
+									"    if(!pm.response.responseSize) {",
+									"        pm.response.to.have.status(404);",
+									"    }else{",
+									"        pm.expect(pm.response.code).to.not.equal(404);",
+									"    }",
+									"});",
+									"",
+									"if(pm.response.responseSize) {",
+									"    let jsonData = pm.response.json(); ",
+									"    if(jsonData) {",
+									"        let iam_events_ids = pm.collectionVariables.get(\"iam_events_ids\");",
+									"        let list = JSON.parse(iam_events_ids);",
+									"        delete_id = jsonData.id;",
+									"        let res = list.filter(item => item != delete_id);",
+									"        iam_events_ids= JSON.stringify(res);",
+									"        pm.collectionVariables.set(\"iam_events_ids\", iam_events_ids);",
+									"    }",
+									"}",
+									"       ",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event/{{eventId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"{{eventId}}"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Delete 404]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Static delete action for not existent target with status code 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event/99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"99999"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Get id deleted]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/event/{{eventId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"{{eventId}}"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 1]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let eventId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"eventId\", eventId);\r",
+									"    //console.log(\"eventId: \"+ eventId);\r",
+									"    pm.expect(eventId).to.not.be.null;\r",
+									"    pm.expect(eventId).to.not.be.undefined;\r",
+									"});\r",
+									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"name\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAt\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAt\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iam_events_ids\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    \r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test1\",\r\n  \"description\": \"Test1\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://auth-dev.qa.ewas.aero/v1/event' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 134905,\r\n  \"name\": \"onAsLoginFailure\",\r\n  \"description\": \"The authentication process fails\",\r\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\r\n  \"status\": 1,\r\n  \"created_at\": \"2024-04-18 12:19:52\",\r\n  \"updated_at\": \"2024-04-19 06:19:50\",\r\n  \"group\": \"user\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 2]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let eventId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"eventId\", eventId);\r",
+									"    //console.log(\"eventId: \"+ eventId);\r",
+									"    pm.expect(eventId).to.not.be.null;\r",
+									"    pm.expect(eventId).to.not.be.undefined;\r",
+									"});\r",
+									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"name\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAt\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAt\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iam_events_ids\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    \r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://auth-dev.qa.ewas.aero/v1/event' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 134905,\r\n  \"name\": \"onAsLoginFailure\",\r\n  \"description\": \"The authentication process fails\",\r\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\r\n  \"status\": 1,\r\n  \"created_at\": \"2024-04-18 12:19:52\",\r\n  \"updated_at\": \"2024-04-19 06:19:50\",\r\n  \"group\": \"user\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 3]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let eventId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"eventId\", eventId);\r",
+									"    //console.log(\"eventId: \"+ eventId);\r",
+									"    pm.expect(eventId).to.not.be.null;\r",
+									"    pm.expect(eventId).to.not.be.undefined;\r",
+									"});\r",
+									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"name\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAt\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAt\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iam_events_ids\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    \r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://auth-dev.qa.ewas.aero/v1/event' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MDYxODU4OTAyMSIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYwNjE4NiwiZXhwIjoxNzIzMDM4MTg2fQ.VYvuK7xpRGfyWDECseiV4C874KnV3kQWwpLK2hTdM50' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"id\": 134905,\r\n  \"name\": \"onAsLoginFailure\",\r\n  \"description\": \"The authentication process fails\",\r\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\r\n  \"status\": 1,\r\n  \"created_at\": \"2024-04-18 12:19:52\",\r\n  \"updated_at\": \"2024-04-19 06:19:50\",\r\n  \"group\": \"user\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "[Update :list]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verifying that the names has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPut\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseName = jsonData.data.map(item => item.name);",
+									"    //console.log(\"responseName\" + responseName);",
+									"    let requestName = requestBodyJson.name",
+									"    //console.log(\"Name response\" + responseName);",
+									"    //console.log(\"Name request\" + requestName);",
+									"    let allNamesMatch = responseName.every(name => name === requestName);",
+									"    pm.expect(allNamesMatch).to.be.true;  ",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"   ",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPut = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPut\", requestBodyPut);\r",
+									"\r",
+									"\r",
+									"/*let uri = pm.collectionVariables.get('base_url')\r",
+									"pm.sendRequest({\r",
+									"    url: uri + '/v1/event',\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/x-www-form-urlencoded'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"name\": \"test3\",\r",
+									"            \"description\": \"Test3\",\r",
+									"            \"payload\": { \"name\":\"test\"},\r",
+									"            \"status\": 1,\r",
+									"            \"group\": \"user\"\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    console.log(\">>> CREATE_\");\r",
+									"    if (!res?.responseSize) return null;\r",
+									"    let jsonData = res.json();\r",
+									"    if (!jsonData) return null;\r",
+									"    jsonData?.id && pm.collectionVariables.set(\"eventId\", jsonData.id);\r",
+									"});*/\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"name\": \"OnlineTest\",\n  \"description\": \"Bulk action\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-04-19 06:19:50\",\n  \"group\": \"user\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event?ql={\"id\":{\"in\":{{iam_events_ids}}}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							],
+							"query": [
+								{
+									"key": "ql",
+									"value": "{\"id\":{\"in\":{{iam_events_ids}}}}"
+								}
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Delete :list]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"(()=>{",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let iam_events_ids = pm.collectionVariables.get(\"iam_events_ids\");",
+									"    let list = iam_events_ids ? JSON.parse(iam_events_ids) : null;",
+									"    if (!Array.isArray(list) || !list.length) return null;",
+									"    let ids = jsonData.data.map(item => item.id);",
+									"    let res = list.filter(item => !ids.includes(item));",
+									"    let values = JSON.stringify(res);",
+									"    pm.collectionVariables.set(\"iam_events_ids\", values);",
+									"})()",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event?ql={\"id\":{\"in\":{{iam_events_ids}}}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							],
+							"query": [
+								{
+									"key": "ql",
+									"value": "{\"id\":{\"in\":{{iam_events_ids}}}}"
+								}
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Cloned]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"event name was cloned correctly\", function () {\r",
+									"    if (!pm.response.responseSize) return null;\r",
+									"\r",
+									"    let jsonData = pm.response.json();\r",
+									"    if (!jsonData) return null;\r",
+									"\r",
+									"    // Obtener el cuerpo de la solicitud\r",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPost\");\r",
+									"\r",
+									"    // Verificar si requestBody es una cadena vacía o nula\r",
+									"    if (!requestBody || requestBody.trim() === \"\") {\r",
+									"        requestBody = null;\r",
+									"    }\r",
+									"\r",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;\r",
+									"\r",
+									"    // Obtener las nome de la respuesta, la colección, y el cuerpo de la solicitud\r",
+									"    let cloneName = jsonData.name;\r",
+									"\r",
+									"    let originName = pm.collectionVariables.get(\"name\");\r",
+									"\r",
+									"    let requestName = requestBodyJson ? requestBodyJson.name: null;\r",
+									"\r",
+									"    // Comparar los nombres según el caso\r",
+									"    if (!requestName) {\r",
+									"        pm.expect(cloneName).to.be.eql(originName);\r",
+									"    } else {\r",
+									"        pm.expect(cloneName).to.be.eql(requestName);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPost = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPost\", requestBodyPost);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MTE1MzYxOTY3MiIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYxMTUzNiwiZXhwIjoxNzIzMDQzNTM2fQ.tj8gqMhmB7ZgOwMSNPtZKe-BSIfiZw594As6eCCyPiE"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"clonadoNewName\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event/{{eventId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"{{eventId}}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://auth-dev.qa.ewas.aero/v1/event/134905' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjI2MTE1MzYxOTY3MiIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMjYxMTUzNiwiZXhwIjoxNzIzMDQzNTM2fQ.tj8gqMhmB7ZgOwMSNPtZKe-BSIfiZw594As6eCCyPiE' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"name\": \"onAsLoginFailure\",\r\n  \"description\": \"The authentication process fails\",\r\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\r\n  \"status\": 1,\r\n  \"created_at\": \"2024-04-18 12:19:52\",\r\n  \"updated_at\": \"2024-04-19 06:19:50\",\r\n  \"group\": \"user\"\r\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "action",
+			"item": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"let keyName = \"iam_events_ids\";\r",
+					"pm.collectionVariables.set(keyName, pm.collectionVariables.get(keyName) || \"[]\");\r",
+					"\r",
+					"let uri = pm.collectionVariables.get('base_url')\r",
+					"pm.sendRequest({\r",
+					"    url: uri + '/v1/oauth/token',\r",
+					"    method: 'POST',\r",
+					"    header: {\r",
+					"        'Content-Type': 'application/x-www-form-urlencoded'\r",
+					"    },\r",
+					"    body: {\r",
+					"        mode: \"urlencoded\",\r",
+					"        urlencoded: [\r",
+					"            { key: \"grant_type\", value: \"password\" },\r",
+					"            { key: \"username\", value: pm.collectionVariables.get('user') },\r",
+					"            { key: \"password\", value: pm.collectionVariables.get('pass') },\r",
+					"            { key: \"scope\", value: \"6\"}\r",
+					"        ]\r",
+					"    }\r",
+					"}, function (err, res) {\r",
+					"    console.log(\">>> ACCESS-TOKEN\");\r",
+					"    if (!res?.responseSize) return null;\r",
+					"    let jsonData = res.json();\r",
+					"    if (!jsonData) return null;\r",
+					"    jsonData?.access_token && pm.collectionVariables.set(\"access_token\", jsonData.access_token);\r",
+					"    /*console.log(\">>> error\", err);\r",
+					"    onsole.log(\">>> access_token-v\", pm.collectionVariables.get('access_token'));\r",
+					"    onsole.log(\">>> access_token-l\", jsonData?.access_token);*/\r",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://auth-dev.qa.ewas.aero"
+		},
+		{
+			"key": "user",
+			"value": "amembrides",
+			"type": "string"
+		},
+		{
+			"key": "pass",
+			"value": "Zaqwsx-123456",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": ""
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "updatedAt",
+			"value": ""
+		},
+		{
+			"key": "requestBody",
+			"value": "\n{\n  \"name\": \"OnlineTest\",\n  \"description\": \"Bulk action\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-04-19 06:19:50\",\n  \"group\": \"user\"\n}\n"
+		},
+		{
+			"key": "iam_events_ids",
+			"value": ""
+		},
+		{
+			"key": "createdAt",
+			"value": ""
+		},
+		{
+			"key": "requestBodyPut",
+			"value": ""
+		},
+		{
+			"key": "requestBodyPost",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	]
+}
