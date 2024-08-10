@@ -28,23 +28,19 @@ By adding the `-r` command to the end of the line plus one of the following opti
 
 For example:
 
-```markdown
-```bash
-   newman run [collection_name.json] -e [environment_name.json] -r html --reporter-html-export [full_path_to_file.html]
+```newman run [collection_name.json] -e [environment_name.json] -r html --reporter-html-export [full_path_to_file.html]```
 
-```markdown
-```bash   
-newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html```
+```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r html --reporter-html-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtml.html```
 
 [reporteHtml.html](./rsc/reporteHtml.html)
 
-- ``` newman run [collection_name.json] -e [enviroment_name.json] -r json --reporter-json-export [full_path_to_file.json]```
+```newman run [collection_name.json] -e [enviroment_name.json] -r json --reporter-json-export [full_path_to_file.json]```
 
 ```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r json --reporter-json-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportJson.json```
 
 [reporteJson.json](./rsc/reportJson.json)
 
-- ``` newman run [collection_name.json] -e [enviroment_name.json] -r htmlextra --reporter-htmlextra-export [full_path_to_file.html]```
+```newman run [collection_name.json] -e [enviroment_name.json] -r htmlextra --reporter-htmlextra-export [full_path_to_file.html]```
 
 ```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r htmlextra --reporter-htmlextra-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtmlExtra.html```
 
