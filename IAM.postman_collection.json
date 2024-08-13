@@ -1229,23 +1229,6 @@
 	],
 	"variable": [
 		{
-			"key": "base_url",
-			"value": "https://auth-dev.qa.ewas.aero",
-			"disabled": true
-		},
-		{
-			"key": "user",
-			"value": "amembrides",
-			"type": "string",
-			"disabled": true
-		},
-		{
-			"key": "pass",
-			"value": "Zaqwsx-123456",
-			"type": "string",
-			"disabled": true
-		},
-		{
 			"key": "eventId",
 			"value": ""
 		},
