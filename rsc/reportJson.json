@@ -1334,24 +1334,6 @@
     ],
     "variable": [
       {
-        "disabled": true,
-        "type": "any",
-        "value": "https://auth-dev.qa.ewas.aero",
-        "key": "base_url"
-      },
-      {
-        "disabled": true,
-        "type": "string",
-        "value": "amembrides",
-        "key": "user"
-      },
-      {
-        "disabled": true,
-        "type": "string",
-        "value": "Zaqwsx-123456",
-        "key": "pass"
-      },
-      {
         "type": "any",
         "value": "",
         "key": "eventId"
@@ -1419,22 +1401,22 @@
     "values": [
       {
         "type": "any",
-        "value": "https://auth-dev.qa.ewas.aero",
+        "value": "https://localhost",
         "key": "base_url"
       },
       {
         "type": "any",
-        "value": "amembrides",
+        "value": "user.demo",
         "key": "user"
       },
       {
         "type": "any",
-        "value": "Zaqwsx-123456",
+        "value": "user.demo",
         "key": "pass"
       },
       {
         "type": "any",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzIiwiZmxvdyI6IjE3MjMzMjEzNTUyODAxNyIsInVzZXIiOjI1NTIzNCwicHJvZHVjdHMiOls2XSwidXNyIjp7InVzZXJJZCI6MjU1MjM0LCJmaXJzdE5hbWUiOiJBbnRvbmlvIn0sImlhdCI6MTcyMzMyMTM1NSwiZXhwIjoxNzIzNzUzMzU1fQ.2zl4h3mnhxjcXR1mjiKvIgVjJ_Ue9e61cZtNgOV0yV0",
+        "value": "",
         "key": "access_token"
       }
     ]
