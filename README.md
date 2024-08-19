@@ -43,6 +43,7 @@ By adding the `-r` command to the end of the line plus one of the following opti
 [reporteHtmlExtra](./rsc/reportHtmlExtra.html)
 
 ```newman run [collection_name.json] -e [enviroment_name.json] -r htmlextra --reporter-htmlextra-export [full_path_to_file.html]```
+
 ```newman run IAM.postman_collection.json -e IAM.postman_environment.json -r htmlextra --reporter-htmlextra-export C:\Users\HP\Documents\git\Testin-IAM-with-Postman\rsc\reportHtmlExtra.html```
 
 

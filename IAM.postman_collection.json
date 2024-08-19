@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f94aa40c-6329-488f-9d27-829bfe01f62e",
+		"_postman_id": "9dc9b0b9-839c-45ff-a805-d3aee7f37f7c",
 		"name": "IAM",
 		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -21,15 +21,25 @@
 									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
+									"(()=>{\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let status = jsonData.status;\r",
+									"    let description = jsonData.description;\r",
+									"    let group = jsonData.group;    \r",
+									"    pm.collectionVariables.set(\"status\", status);\r",
+									"    pm.collectionVariables.set(\"description\", description);\r",
+									"    pm.collectionVariables.set(\"group\", group);\r",
+									"})()\r",
+									"\r",
 									"pm.test(\"Event ID is not null (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('id');\r",
 									"    let eventId = jsonData.id;\r",
 									"    pm.collectionVariables.set(\"eventId\", eventId);\r",
-									"    //console.log(\"eventId: \"+ eventId);\r",
 									"    pm.expect(eventId).to.not.be.null;\r",
 									"    pm.expect(eventId).to.not.be.undefined;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('name');\r",
@@ -37,6 +47,7 @@
 									"    pm.collectionVariables.set(\"name\", name);\r",
 									"    pm.expect(name).to.not.be.empty;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('updated_at');\r",
@@ -70,8 +81,8 @@
 									"    {\r",
 									"        resourceIds = resourceIds;\r",
 									"    }\r",
-									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
 									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -119,8 +130,7 @@
 								"v1",
 								"event"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -134,32 +144,7 @@
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
-									"",
-									"",
-									"/*// Obtener la respuesta en formato JSON",
-									"let jsonResponse = pm.response.json();",
-									"",
-									"// Obtener los IDs de la respuesta (ajusta el acceso según la estructura de tu respuesta)",
-									"let responseIds = jsonResponse.data.map(item => item.id); // Suponiendo que cada item tiene una propiedad `id`",
-									"console.log(\"ids obtenidos\" + responseIds);",
-									"",
-									"// Obtener los IDs esperados desde la variable de colección",
-									"let expectedIds = JSON.parse(pm.collectionVariables.get(\"iam_events_ids\"));",
-									"console.log(\"id almacenados\" + expectedIds);",
-									"",
-									"// Verificar que todos los IDs esperados estén contenidos en los IDs de la respuesta",
-									"let allIdsPresent = expectedIds.every(id => responseIds.includes(id));",
-									"console.log(\"allIdsPresent\" + allIdsPresent);",
-									"",
-									"// Prueba para asegurar que todos los IDs esperados están en la respuesta",
-									"pm.test(\"All expected IDs are in the response\", function() {",
-									"    pm.expect(allIdsPresent).to.be.true;",
-									"});",
-									"",
-									"// Imprimir un mensaje en la consola para mayor claridad (opcional)",
-									"if (!allIdsPresent) {",
-									"    console.log(\"IDs faltantes:\", expectedIds.filter(id => !responseIds.includes(id)));",
-									"}*/"
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -212,7 +197,14 @@
 									"    pm.expect(currentName.length > 1).eq(true);",
 									"    let expectedName = pm.collectionVariables.get(\"name\");",
 									"    pm.expect(currentName).to.eql(expectedName);",
-									"    //console.log(\"Current value is \"+currentName+ \" and the expected value is \"+ expectedName)",
+									"});",
+									"",
+									"pm.test(\"Verifying Description is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('description');",
+									"    let currentDescription = jsonData.description;",
+									"    let expectedDescription = pm.collectionVariables.get(\"description\");",
+									"    pm.expect(currentDescription).to.eql(expectedDescription);",
 									"});",
 									"",
 									"pm.test(\"Verifying Id is the created one\", function () {",
@@ -223,7 +215,6 @@
 									"    pm.expect(currentID).to.not.be.undefined;",
 									"    let expectedId = pm.collectionVariables.get(\"eventId\");",
 									"    pm.expect(currentID).to.eql(expectedId);",
-									"    //console.log(\"Current id is \"+currentID+ \" and the expected id is \"+ expectedId);",
 									"});",
 									"",
 									"pm.test(\"Verifying created_at is the created one\", function () {",
@@ -241,12 +232,32 @@
 									"    let jsonData = pm.response.json();",
 									"    pm.expect(jsonData).to.have.property('updated_at');",
 									"    let currentUpdatedAt = new Date(jsonData.updated_at).toISOString().slice(0, 19) + 'Z';",
-									"    //console.log(\"obtenida\" + currentUpdatedAt);",
 									"    let expectedUpdatedAt = pm.collectionVariables.get(\"updatedAt\");",
 									"    expectedUpdatedAt = new Date(expectedUpdatedAt).toISOString().slice(0, 19) + 'Z';",
-									"    //console.log(\"esperada\" + expectedUpdatedAt);",
 									"    pm.expect(currentUpdatedAt).to.eql(expectedUpdatedAt);",
-									"    //console.log(\"Current updated_at is \"+currentUpdatedAt+ \" and the expected updated_at is \"+ expectedUpdatedAt);",
+									"});",
+									"",
+									"pm.test(\"Verifying Status is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"    let currentStatus = jsonData.status;",
+									"    let expectedStatus = parseInt(pm.collectionVariables.get(\"status\"));",
+									"    if(currentStatus || currentStatus == 0){",
+									"        pm.expect(currentStatus).to.eql(expectedStatus);",
+									"    }",
+									"    else{        ",
+									"        pm.expect(currentStatus).to.eql(1);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Verifying Group is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('group');",
+									"    let currentGroup = jsonData.group;",
+									"    let expectedGroup = pm.collectionVariables.get(\"group\");",
+									"    if(expectedGroup){",
+									"        pm.expect(currentGroup).to.eql(expectedGroup.toString());",
+									"    }",
 									"});",
 									""
 								],
@@ -303,23 +314,94 @@
 									"",
 									"pm.test(\"updated_at was updated correctly\", function () {",
 									"    let jsonData = pm.response.json();",
-									"    let newUpdatedAtS = jsonData.updated_at;",
-									"    let newUpdatedAt = new Date(newUpdatedAtS);",
-									"    //console.log(\"newUpdatedAt \"+newUpdatedAt);",
-									"    let updatedAtS = pm.collectionVariables.get(\"updatedAt\");",
-									"    let updatedAt = new Date(updatedAtS);",
-									"    //console.log(\"updatedAt \"+updatedAt);",
-									"    pm.expect(updatedAt.getTime()).to.be.lessThan(newUpdatedAt.getTime());",
-									"    //pm.expect(newUpdatedAt).to.not.be.eql(updatedAt);",
+									"    let newUpdatedAtS = jsonData.updated_at; // 2024-07-25T16:19:52.000Z",
+									"    let newUpdatedAt = new Date(newUpdatedAtS).getTime(); // Convertido a UTC en ms",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimple\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let updatedAtS = requestBodyJson?.updated_at;",
+									"    if (updatedAtS) {",
+									"        if (!updatedAtS.endsWith('Z') && updatedAtS.indexOf('T') === -1) {",
+									"            updatedAtS = updatedAtS.replace(' ', 'T') + 'Z'; ",
+									"        }",
+									"        let updatedAt = new Date(updatedAtS).getTime();",
+									"        pm.expect(updatedAt).to.eql(newUpdatedAt);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"created_at was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newCreatedAtS = jsonData.created_at;",
+									"    let newCreatedAt = new Date(newCreatedAtS).getTime();",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimple\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let createdAtS = requestBodyJson?.created_at;",
+									"    if (createdAtS) {",
+									"        if (!createdAtS.endsWith('Z') && createdAtS.indexOf('T') === -1) {",
+									"            createdAtS = createdAtS.replace(' ', 'T') + 'Z'; ",
+									"        }",
+									"        let createdAt = new Date(createdAtS).getTime();",
+									"        pm.expect(createdAt).to.eql(newCreatedAt);",
+									"    }",
 									"});",
 									"",
 									"pm.test(\"Name was updated correctly\", function () {",
 									"    let jsonData = pm.response.json();",
 									"    let newName = jsonData.name;",
-									"    let collLastName = pm.collectionVariables.get(\"name\");",
-									"    pm.expect(newName).to.not.be.eql(collLastName);",
-									"    //console.log(\"New last name is \"+newName+\" and Old last name is \"+collLastName);",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimple\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestName = requestBodyJson?.name;",
+									"    if(requestName){",
+									"    pm.expect(newName).to.be.eql(requestName);",
+									"    }",
 									"});",
+									"",
+									"pm.test(\"Description was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newDescription = jsonData.description;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimple\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestDescription = requestBodyJson?.description;",
+									"    if(requestDescription){",
+									"    pm.expect(newDescription).to.be.eql(requestDescription);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Group was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newGroup = jsonData.group;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimple\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestGroup = requestBodyJson?.group;",
+									"    if(requestGroup){",
+									"    pm.expect(newGroup).to.be.eql(requestGroup);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Status was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newStatus = jsonData.status;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimple\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestStatus = requestBodyJson?.status;",
+									"    if(requestStatus){",
+									"    pm.expect(newStatus).to.be.eql(requestStatus);",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPutSimple = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPutSimple\", requestBodyPutSimple);\r",
 									""
 								],
 								"type": "text/javascript",
@@ -332,7 +414,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n  \"name\": \"update put:id\",\n  \"description\": \"The authentication process fails\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"{{$randomDateFuture}}\",\n  \"group\": \"user\"\n}\n",
+							"raw": "\n{\n  \"name\": \"update put:id\",\n  \"description\": \"The authentication process fails\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-07-25 16:19:52\",\n  \"group\": \"user\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -371,7 +453,6 @@
 									"    if(pm.response.responseSize) {",
 									"        let jsonData = pm.response.json(); ",
 									"        let id = pm.collectionVariables.get(\"eventId\");",
-									"",
 									"        pm.response.to.have.status(200);",
 									"        ",
 									"        pm.expect(jsonData).to.be.an('object');",
@@ -553,6 +634,7 @@
 									"    pm.expect(eventId).to.not.be.null;\r",
 									"    pm.expect(eventId).to.not.be.undefined;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('name');\r",
@@ -560,6 +642,7 @@
 									"    pm.collectionVariables.set(\"name\", name);\r",
 									"    pm.expect(name).to.not.be.empty;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('updated_at');\r",
@@ -580,7 +663,6 @@
 									"    let scope = pm.collectionVariables;\r",
 									"    let keyName = \"iam_events_ids\";\r",
 									"    let jsonData = pm.response.json();\r",
-									"    \r",
 									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
 									"    pm.expect(jsonData.id).to.not.be.null;\r",
 									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
@@ -593,7 +675,6 @@
 									"    {\r",
 									"        resourceIds = resourceIds;\r",
 									"    }\r",
-									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
 									"});\r",
 									""
 								],
@@ -642,8 +723,7 @@
 								"v1",
 								"event"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -667,6 +747,7 @@
 									"    pm.expect(eventId).to.not.be.null;\r",
 									"    pm.expect(eventId).to.not.be.undefined;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('name');\r",
@@ -674,6 +755,7 @@
 									"    pm.collectionVariables.set(\"name\", name);\r",
 									"    pm.expect(name).to.not.be.empty;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('updated_at');\r",
@@ -694,7 +776,6 @@
 									"    let scope = pm.collectionVariables;\r",
 									"    let keyName = \"iam_events_ids\";\r",
 									"    let jsonData = pm.response.json();\r",
-									"    \r",
 									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
 									"    pm.expect(jsonData.id).to.not.be.null;\r",
 									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
@@ -707,7 +788,6 @@
 									"    {\r",
 									"        resourceIds = resourceIds;\r",
 									"    }\r",
-									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
 									"});\r",
 									""
 								],
@@ -756,8 +836,7 @@
 								"v1",
 								"event"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -781,6 +860,7 @@
 									"    pm.expect(eventId).to.not.be.null;\r",
 									"    pm.expect(eventId).to.not.be.undefined;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('name');\r",
@@ -788,6 +868,7 @@
 									"    pm.collectionVariables.set(\"name\", name);\r",
 									"    pm.expect(name).to.not.be.empty;\r",
 									"});\r",
+									"\r",
 									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
 									"    let jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('updated_at');\r",
@@ -808,7 +889,6 @@
 									"    let scope = pm.collectionVariables;\r",
 									"    let keyName = \"iam_events_ids\";\r",
 									"    let jsonData = pm.response.json();\r",
-									"    \r",
 									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
 									"    pm.expect(jsonData.id).to.not.be.null;\r",
 									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
@@ -821,7 +901,6 @@
 									"    {\r",
 									"        resourceIds = resourceIds;\r",
 									"    }\r",
-									"    //console.log(\"IDSSS \" + scope.get(keyName));\r",
 									"});\r",
 									""
 								],
@@ -870,8 +949,7 @@
 								"v1",
 								"event"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -893,12 +971,45 @@
 									"    let requestBody = pm.collectionVariables.get(\"requestBodyPut\");",
 									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
 									"    let responseName = jsonData.data.map(item => item.name);",
-									"    //console.log(\"responseName\" + responseName);",
 									"    let requestName = requestBodyJson.name",
-									"    //console.log(\"Name response\" + responseName);",
-									"    //console.log(\"Name request\" + requestName);",
 									"    let allNamesMatch = responseName.every(name => name === requestName);",
 									"    pm.expect(allNamesMatch).to.be.true;  ",
+									"});",
+									"",
+									"pm.test(\"Verifying that the description has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPut\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseDescription = jsonData.data.map(item => item.description);",
+									"    let requestDescription = requestBodyJson.description",
+									"    let allDescriptionsMatch = responseDescription.every(description => description === requestDescription);",
+									"    pm.expect(allDescriptionsMatch).to.be.true;  ",
+									"});",
+									"",
+									"pm.test(\"Verifying that the Status has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPut\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseStatus = jsonData.data.map(item => item.status);",
+									"    let requestStatus = requestBodyJson.status",
+									"    let allStatusMatch = responseStatus.every(status => status === requestStatus);",
+									"    pm.expect(allStatusMatch).to.be.true;  ",
+									"});",
+									"",
+									"pm.test(\"Verifying that the Group has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPut\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseGroup = jsonData.data.map(item => item.group);",
+									"    let requestGroup = requestBodyJson.group",
+									"    let allStatusMatch = responseGroup.every(group => group === requestGroup);",
+									"    pm.expect(allStatusMatch).to.be.true;  ",
 									"});",
 									"",
 									"",
@@ -964,7 +1075,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "\n{\n  \"name\": \"OnlineTest\",\n  \"description\": \"Bulk action\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-04-19 06:19:50\",\n  \"group\": \"user\"\n}\n",
+							"raw": "\n{\n  \"name\": \"OnlineTest\",\n  \"description\": \"Bulk action\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 3,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-04-19 06:19:50\",\n  \"group\": \"guess\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1064,6 +1175,202 @@
 					"response": []
 				},
 				{
+					"name": "[clone non-existent id]/v1/event/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"event name was cloned correctly\", function () {\r",
+									"    if (!pm.response.responseSize) return null;\r",
+									"    let jsonData = pm.response.json();\r",
+									"    if (!jsonData) return null;\r",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPost\");\r",
+									"    if (!requestBody || requestBody.trim() === \"\") {\r",
+									"        requestBody = null;\r",
+									"    }\r",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;\r",
+									"    let cloneName = jsonData.name;\r",
+									"    let requestName = requestBodyJson ? requestBodyJson.name: null;\r",
+									"    if (requestName) {\r",
+									"        pm.expect(cloneName).to.be.eql(requestName);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPost = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPost\", requestBodyPost);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"name\": \"cloned\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event/{{eventId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event",
+								"{{eventId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 4]/v1/event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let eventId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"eventId\", eventId);\r",
+									"    //console.log(\"eventId: \"+ eventId);\r",
+									"    pm.expect(eventId).to.not.be.null;\r",
+									"    pm.expect(eventId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"name\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAt\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAt\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iam_events_ids\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    \r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/event",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "[Cloned]/v1/event/:id",
 					"event": [
 						{
@@ -1076,28 +1383,16 @@
 									"\r",
 									"pm.test(\"event name was cloned correctly\", function () {\r",
 									"    if (!pm.response.responseSize) return null;\r",
-									"\r",
 									"    let jsonData = pm.response.json();\r",
 									"    if (!jsonData) return null;\r",
-									"\r",
-									"    // Obtener el cuerpo de la solicitud\r",
 									"    let requestBody = pm.collectionVariables.get(\"requestBodyPost\");\r",
-									"\r",
-									"    // Verificar si requestBody es una cadena vacía o nula\r",
 									"    if (!requestBody || requestBody.trim() === \"\") {\r",
 									"        requestBody = null;\r",
 									"    }\r",
-									"\r",
 									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;\r",
-									"\r",
-									"    // Obtener las nome de la respuesta, la colección, y el cuerpo de la solicitud\r",
 									"    let cloneName = jsonData.name;\r",
-									"\r",
 									"    let originName = pm.collectionVariables.get(\"name\");\r",
-									"\r",
 									"    let requestName = requestBodyJson ? requestBodyJson.name: null;\r",
-									"\r",
-									"    // Comparar los nombres según el caso\r",
 									"    if (!requestName) {\r",
 									"        pm.expect(cloneName).to.be.eql(originName);\r",
 									"    } else {\r",
@@ -1139,7 +1434,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"clonadoNewName\"\r\n}",
+							"raw": "{\r\n  \"name\": \"cloned\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1156,8 +1451,7 @@
 								"event",
 								"{{eventId}}"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -1165,7 +1459,1433 @@
 		},
 		{
 			"name": "action",
-			"item": []
+			"item": [
+				{
+					"name": "[Create]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"(()=>{\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let status = jsonData.status;\r",
+									"    let description = jsonData.description;\r",
+									"    let group = jsonData.group; \r",
+									"    pm.collectionVariables.set(\"statusAction\", status);     \r",
+									"    pm.collectionVariables.set(\"descriptionAction\", description);\r",
+									"    pm.collectionVariables.set(\"groupAction\", group);\r",
+									"})()\r",
+									"\r",
+									"pm.test(\"Action ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let actionId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"idAction\", actionId);\r",
+									"    pm.expect(actionId).to.not.be.null;\r",
+									"    pm.expect(actionId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"nameAction\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAtAction\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAtAction\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iamActionIds\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"action.user:lock\",\r\n  \"description\": \"The process of blocking users involves temporarily or permanently disabling a user's account in a system. It is used to protect the security of a system against potential threats or security breaches, taking measures to prevent unauthorized access or malicious activities. Some possible reasons that would justify this block for security reasons include: Unauthorized access attempts, Violation of security policie, Malicious activity, Termination of employment or relationship with the organization, etc.\",\r\n  \"payload\": \"{\\\"example\\\":{\\\"date\\\":1713180784894,\\\"enterpriseId\\\":1,\\\"failure\\\":{\\\"count\\\":8,\\\"ko_last\\\":\\\"2024-04-15T11:33:04.000Z\\\",\\\"ko_start\\\":\\\"2024-04-15T11:32:58.000Z\\\",\\\"user_id\\\":134905,\\\"ko_diff\\\":0},\\\"fingerprint\\\":{\\\"components\\\":{\\\"useragent\\\":{\\\"browser\\\":{},\\\"device\\\":{\\\"family\\\":\\\"Other\\\",\\\"version\\\":\\\"0\\\",\\\"id\\\":\\\"UUIDE49283ED-12EA-D64D-6DDE-DDC26B30F948_ANTONIO.MEMBRIDES\\\",\\\"description\\\":\\\"Chrome - 110.0.0.0 / Windows - windows-10\\\"},\\\"os\\\":{},\\\"product\\\":{\\\"version\\\":\\\"2.0\\\"}},\\\"geoip\\\":{},\\\"server\\\":{},\\\"client\\\":{}}},\\\"flow\\\":\\\"171318078476991\\\",\\\"method\\\":\\\"BASIC\\\",\\\"products\\\":[4],\\\"userId\\\":134905,\\\"userStatus\\\":1,\\\"username\\\":\\\"tony@sita.aero\\\"},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"date\\\":{\\\"type\\\":\\\"integer\\\"},\\\"enterpriseId\\\":{\\\"type\\\":\\\"integer\\\"},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}}},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"browser\\\":{\\\"type\\\":\\\"object\\\"},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"family\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}}},\\\"os\\\":{\\\"type\\\":\\\"object\\\"},\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"version\\\":{\\\"type\\\":\\\"string\\\"}}}}},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\"},\\\"server\\\":{\\\"type\\\":\\\"object\\\"},\\\"client\\\":{\\\"type\\\":\\\"object\\\"}}}}},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]},\\\"userId\\\":{\\\"type\\\":\\\"integer\\\"},\\\"userStatus\\\":{\\\"type\\\":\\\"integer\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"}}}}\",\r\n  \"status\": 1,\r\n  \"group\": \"user\",\r\n  \"created_at\": \"2024-04-18 12:19:52\",\r\n  \"updated_at\": \"2024-04-19 06:19:50\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[List]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action?page=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[List :id]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verifying Name is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('name');",
+									"    let currentName = jsonData.name;",
+									"    pm.expect(currentName).to.be.an('string');",
+									"    pm.expect(currentName.length > 1).eq(true);",
+									"    let expectedName = pm.collectionVariables.get(\"nameAction\");",
+									"    pm.expect(currentName).to.eql(expectedName);",
+									"});",
+									"",
+									"pm.test(\"Verifying Description is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('description');",
+									"    let currentDescription = jsonData.description;",
+									"    let expectedDescription = pm.collectionVariables.get(\"descriptionAction\");",
+									"    pm.expect(currentDescription).to.eql(expectedDescription);",
+									"});",
+									"",
+									"pm.test(\"Verifying Id is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    let currentID = jsonData.id;",
+									"    pm.expect(currentID).to.not.be.null;",
+									"    pm.expect(currentID).to.not.be.undefined;",
+									"    let expectedId = pm.collectionVariables.get(\"idAction\");",
+									"    pm.expect(currentID).to.eql(expectedId);",
+									"});",
+									"",
+									"pm.test(\"Verifying created_at is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('created_at');",
+									"    let currentCreatedAt = new Date(jsonData.created_at).toISOString().slice(0, 19) + 'Z';",
+									"    let iso8601Regex = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$/;",
+									"    pm.expect(currentCreatedAt).to.match(iso8601Regex);",
+									"    let expectedCreatedAt = pm.collectionVariables.get(\"createdAtAction\");",
+									"    expectedCreatedAt = new Date(expectedCreatedAt).toISOString().slice(0, 19) + 'Z';",
+									"    pm.expect(currentCreatedAt).to.eql(expectedCreatedAt);",
+									"});",
+									"",
+									"pm.test(\"Verifying updated_at is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('updated_at');",
+									"    let currentUpdatedAt = new Date(jsonData.updated_at).toISOString().slice(0, 19) + 'Z';",
+									"    let expectedUpdatedAt = pm.collectionVariables.get(\"updatedAtAction\");",
+									"    expectedUpdatedAt = new Date(expectedUpdatedAt).toISOString().slice(0, 19) + 'Z';",
+									"    pm.expect(currentUpdatedAt).to.eql(expectedUpdatedAt);",
+									"});",
+									"",
+									"pm.test(\"Verifying Status is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"    let currentStatus = jsonData.status;",
+									"    let expectedStatus = parseInt(pm.collectionVariables.get(\"statusAction\"));",
+									"    if(currentStatus || currentStatus == 0){",
+									"        pm.expect(currentStatus).to.eql(expectedStatus);",
+									"    }",
+									"    else{        ",
+									"        pm.expect(currentStatus).to.eql(1);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Verifying Group is the created one\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('group');",
+									"    let currentGroup = jsonData.group;",
+									"    let expectedGroup = pm.collectionVariables.get(\"groupAction\");",
+									"    if(expectedGroup){",
+									"        pm.expect(currentGroup).to.eql(expectedGroup.toString());",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/action/{{idAction}}?format=full",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"{{idAction}}"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "full"
+								}
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "[Update :id]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"updated_at was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newUpdatedAtS = jsonData.updated_at;",
+									"    let newUpdatedAt = new Date(newUpdatedAtS).getTime();",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimpleAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let updatedAtS = requestBodyJson?.updated_at;",
+									"    if (updatedAtS) {",
+									"        if (!updatedAtS.endsWith('Z') && updatedAtS.indexOf('T') === -1) {",
+									"            updatedAtS = updatedAtS.replace(' ', 'T') + 'Z';",
+									"        }",
+									"        let updatedAt = new Date(updatedAtS).getTime();",
+									"        pm.expect(updatedAt).to.eql(newUpdatedAt);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"created_at was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newCreatedAtS = jsonData.created_at;",
+									"    let newCreatedAt = new Date(newCreatedAtS).getTime();",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimpleAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let createdAtS = requestBodyJson?.created_at;",
+									"    if (createdAtS) {",
+									"        if (!createdAtS.endsWith('Z') && createdAtS.indexOf('T') === -1) {",
+									"            createdAtS = createdAtS.replace(' ', 'T') + 'Z';",
+									"        }",
+									"        let createdAt = new Date(createdAtS).getTime();",
+									"        pm.expect(createdAt).to.eql(newCreatedAt);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Name was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newName = jsonData.name;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimpleAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestName = requestBodyJson?.name;",
+									"    if(requestName){",
+									"    pm.expect(newName).to.be.eql(requestName);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Description was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newDescription = jsonData.description;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimpleAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestDescription = requestBodyJson?.description;",
+									"    if(requestDescription){",
+									"    pm.expect(newDescription).to.be.eql(requestDescription);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Group was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newGroup = jsonData.group;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimpleAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestGroup = requestBodyJson?.group;",
+									"    if(requestGroup){",
+									"    pm.expect(newGroup).to.be.eql(requestGroup);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Status was updated correctly\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    let newStatus = jsonData.status;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutSimpleAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let requestStatus = requestBodyJson?.status;",
+									"    if(requestStatus){",
+									"    pm.expect(newStatus).to.be.eql(requestStatus);",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPutSimple = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPutSimpleAction\", requestBodyPutSimple);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"name\": \"update put:id\",\n  \"description\": \"The authentication process fails\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 1,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-07-25 16:19:52\",\n  \"group\": \"user\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action/{{idAction}}?format=full",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"{{idAction}}"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "full"
+								}
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[DELETE :id]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Dynamic delete action for existent target with status code is 200\", function () {",
+									"    if(pm.response.responseSize) {",
+									"        let jsonData = pm.response.json(); ",
+									"        let id = pm.collectionVariables.get(\"idAction\");",
+									"        pm.response.to.have.status(200);",
+									"        pm.expect(jsonData).to.be.an('object');",
+									"        pm.expect(jsonData.id).eq(id);",
+									"        pm.expect(jsonData.name).to.be.an('string');",
+									"        pm.expect(jsonData.description).to.be.an('string');",
+									"        pm.expect(jsonData.description.length > 1).eq(true);",
+									"        pm.expect(jsonData.description).to.not.be.empty;",
+									"    }else{",
+									"        pm.expect(pm.response.code).to.not.equal(200);",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"Dynamic delete action for not existent target with status code 404\", function () {",
+									"    if(!pm.response.responseSize) {",
+									"        pm.response.to.have.status(404);",
+									"    }else{",
+									"        pm.expect(pm.response.code).to.not.equal(404);",
+									"    }",
+									"});",
+									"",
+									"if(pm.response.responseSize) {",
+									"    let jsonData = pm.response.json(); ",
+									"    if(jsonData) {",
+									"        let iamActionIds = pm.collectionVariables.get(\"iamActionIds\");",
+									"        let list = JSON.parse(iamActionIds);",
+									"        delete_id = jsonData.id;",
+									"        let res = list.filter(item => item != delete_id);",
+									"        iamActionIds= JSON.stringify(res);",
+									"        pm.collectionVariables.set(\"iamActionIds\", iamActionIds);",
+									"    }",
+									"}",
+									"       ",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action/{{idAction}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"{{idAction}}"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Delete 404]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Static delete action for not existent target with status code 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action/99999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"99999"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Get id deleted]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v1/action/{{idAction}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"{{idAction}}"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 1]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let actionId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"idAction\", actionId);\r",
+									"    pm.expect(actionId).to.not.be.null;\r",
+									"    pm.expect(actionId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"nameAction\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAtAction\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAtAction\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iamActionIds\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test1\",\r\n  \"description\": \"Test1\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 2]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let actionId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"idAction\", actionId);\r",
+									"    pm.expect(actionId).to.not.be.null;\r",
+									"    pm.expect(actionId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"nameAction\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"pm.test(\"Action updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAtAction\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAtAction\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iamActionIds\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 3]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let actionId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"idAction\", actionId);\r",
+									"    pm.expect(actionId).to.not.be.null;\r",
+									"    pm.expect(actionId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"nameAction\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAtAction\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAtAction\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iamActionIds\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Update :list]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verifying that the names has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseName = jsonData.data.map(item => item.name);",
+									"    let requestName = requestBodyJson.name",
+									"    let allNamesMatch = responseName.every(name => name === requestName);",
+									"    pm.expect(allNamesMatch).to.be.true;  ",
+									"});",
+									"",
+									"pm.test(\"Verifying that the description has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseDescription = jsonData.data.map(item => item.description);",
+									"    let requestDescription = requestBodyJson.description",
+									"    let allDescriptionsMatch = responseDescription.every(description => description === requestDescription);",
+									"    pm.expect(allDescriptionsMatch).to.be.true;  ",
+									"});",
+									"",
+									"pm.test(\"Verifying that the Status has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseStatus = jsonData.data.map(item => item.status);",
+									"    let requestStatus = requestBodyJson.status",
+									"    let allStatusMatch = responseStatus.every(status => status === requestStatus);",
+									"    pm.expect(allStatusMatch).to.be.true;  ",
+									"});",
+									"",
+									"pm.test(\"Verifying that the Group has been updated\", function () {",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPutAction\");",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;",
+									"    let responseGroup = jsonData.data.map(item => item.group);",
+									"    let requestGroup = requestBodyJson.group",
+									"    let allStatusMatch = responseGroup.every(group => group === requestGroup);",
+									"    pm.expect(allStatusMatch).to.be.true;  ",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"   ",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPut = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPutAction\", requestBodyPut);\r",
+									"\r",
+									"\r",
+									"/*let uri = pm.collectionVariables.get('base_url')\r",
+									"pm.sendRequest({\r",
+									"    url: uri + '/v1/event',\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Content-Type': 'application/x-www-form-urlencoded'\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"name\": \"test3\",\r",
+									"            \"description\": \"Test3\",\r",
+									"            \"payload\": { \"name\":\"test\"},\r",
+									"            \"status\": 1,\r",
+									"            \"group\": \"user\"\r",
+									"        })\r",
+									"    }\r",
+									"}, function (err, res) {\r",
+									"    console.log(\">>> CREATE_\");\r",
+									"    if (!res?.responseSize) return null;\r",
+									"    let jsonData = res.json();\r",
+									"    if (!jsonData) return null;\r",
+									"    jsonData?.id && pm.collectionVariables.set(\"eventId\", jsonData.id);\r",
+									"});*/\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"name\": \"OnlineTest\",\n  \"description\": \"Bulk action\",\n  \"payload\": \"{\\\"example\\\":{\\\"method\\\":\\\"BASIC\\\",\\\"flow\\\":\\\"170834142332623\\\",\\\"username\\\":\\\"user1@example.com\\\",\\\"products\\\":{\\\"request\\\":[3]},\\\"error\\\":{\\\"short\\\":\\\"LOGIN_NOOK\\\"},\\\"fingerprint\\\":{\\\"hash\\\":\\\"18e23af4a27b0e0182fed5cbd7286be1\\\",\\\"components\\\":{\\\"useragent\\\":{\\\"product\\\":{\\\"name\\\":\\\"eWAS\\\",\\\"version\\\":\\\"3.6.1-12\\\",\\\"id\\\":3},\\\"device\\\":{\\\"id\\\":\\\"UUUU-AAAA-IIII\\\",\\\"description\\\":\\\"iPad Pro 2023 10.5inch (iPadOS 16.6)\\\"},\\\"os\\\":{\\\"name\\\":\\\"iPadOS\\\",\\\"version\\\":\\\"16.6\\\"}},\\\"acceptHeaders\\\":{\\\"accept\\\":\\\"*/*\\\"},\\\"geoip\\\":{\\\"country\\\":null},\\\"server\\\":{\\\"host\\\":\\\"localhost:4000\\\",\\\"ip\\\":\\\"localhost\\\",\\\"port\\\":\\\"4000\\\"},\\\"client\\\":{\\\"ip\\\":\\\"::1\\\",\\\"name\\\":\\\"localhost\\\",\\\"ipOriginal\\\":\\\"::1\\\"}}},\\\"failure\\\":{\\\"count\\\":5,\\\"ko_last\\\":\\\"2024-02-12T15:05:27.000Z\\\",\\\"ko_start\\\":\\\"2024-02-06T17:40:24.000Z\\\",\\\"user_id\\\":187721,\\\"ko_diff\\\":8485}},\\\"schema\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"method\\\":{\\\"type\\\":\\\"string\\\"},\\\"flow\\\":{\\\"type\\\":\\\"string\\\"},\\\"username\\\":{\\\"type\\\":\\\"string\\\"},\\\"products\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"request\\\":{\\\"type\\\":\\\"array\\\",\\\"items\\\":[{\\\"type\\\":\\\"integer\\\"}]}},\\\"required\\\":[\\\"request\\\"]},\\\"error\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"short\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"short\\\"]},\\\"fingerprint\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"hash\\\":{\\\"type\\\":\\\"string\\\"},\\\"components\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"useragent\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"product\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"},\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\",\\\"id\\\"]},\\\"device\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"},\\\"description\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"id\\\",\\\"description\\\"]},\\\"os\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"version\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"name\\\",\\\"version\\\"]}},\\\"required\\\":[\\\"product\\\",\\\"device\\\",\\\"os\\\"]},\\\"acceptHeaders\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"accept\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"accept\\\"]},\\\"geoip\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"country\\\":{\\\"type\\\":\\\"null\\\"}},\\\"required\\\":[\\\"country\\\"]},\\\"server\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"host\\\":{\\\"type\\\":\\\"string\\\"},\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"port\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"host\\\",\\\"ip\\\",\\\"port\\\"]},\\\"client\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"ip\\\":{\\\"type\\\":\\\"string\\\"},\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"ipOriginal\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"ip\\\",\\\"name\\\",\\\"ipOriginal\\\"]}},\\\"required\\\":[\\\"useragent\\\",\\\"acceptHeaders\\\",\\\"geoip\\\",\\\"server\\\",\\\"client\\\"]}},\\\"required\\\":[\\\"hash\\\",\\\"components\\\"]},\\\"failure\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"count\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_last\\\":{\\\"type\\\":\\\"string\\\"},\\\"ko_start\\\":{\\\"type\\\":\\\"string\\\"},\\\"user_id\\\":{\\\"type\\\":\\\"integer\\\"},\\\"ko_diff\\\":{\\\"type\\\":\\\"integer\\\"}},\\\"required\\\":[\\\"count\\\",\\\"ko_last\\\",\\\"ko_start\\\",\\\"user_id\\\",\\\"ko_diff\\\"]}},\\\"required\\\":[\\\"method\\\",\\\"flow\\\",\\\"username\\\",\\\"products\\\",\\\"error\\\",\\\"fingerprint\\\",\\\"failure\\\"]}}\",\n  \"status\": 3,\n  \"created_at\": \"2024-04-18 12:19:52\",\n  \"updated_at\": \"2024-04-19 06:19:50\",\n  \"group\": \"guess\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action?ql={\"id\":{\"in\":{{iamActionIds}}}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							],
+							"query": [
+								{
+									"key": "ql",
+									"value": "{\"id\":{\"in\":{{iamActionIds}}}}"
+								}
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[Delete :list]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"(()=>{",
+									"    if (!pm.response.responseSize) return null;",
+									"    let jsonData = pm.response.json();",
+									"    if (!jsonData) return null;",
+									"    let iamActionIds = pm.collectionVariables.get(\"iamActionIds\");",
+									"    let list = iamActionIds ? JSON.parse(iamActionIds) : null;",
+									"    if (!Array.isArray(list) || !list.length) return null;",
+									"    let ids = jsonData.data.map(item => item.id);",
+									"    let res = list.filter(item => !ids.includes(item));",
+									"    let values = JSON.stringify(res);",
+									"    pm.collectionVariables.set(\"iamActionIds\", values);",
+									"})()",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action?ql={\"id\":{\"in\":{{iamActionIds}}}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							],
+							"query": [
+								{
+									"key": "ql",
+									"value": "{\"id\":{\"in\":{{iamActionIds}}}}"
+								}
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "[clone non-existent id]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"event name was cloned correctly\", function () {\r",
+									"    if (!pm.response.responseSize) return null;\r",
+									"    let jsonData = pm.response.json();\r",
+									"    if (!jsonData) return null;\r",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPostAction\");\r",
+									"    if (!requestBody || requestBody.trim() === \"\") {\r",
+									"        requestBody = null;\r",
+									"    }\r",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;\r",
+									"    let cloneName = jsonData.name;\r",
+									"    let requestName = requestBodyJson ? requestBodyJson.name: null;\r",
+									"    if (requestName) {\r",
+									"        pm.expect(cloneName).to.be.eql(requestName);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPost = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPostAction\", requestBodyPost);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"name\": \"cloned\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action/{{eventId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"{{eventId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Create 4]/v1/action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action ID is not null (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    let actionId = jsonData.id;\r",
+									"    pm.collectionVariables.set(\"idAction\", actionId);\r",
+									"    pm.expect(actionId).to.not.be.null;\r",
+									"    pm.expect(actionId).to.not.be.undefined;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action Name is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    let name = jsonData.name;\r",
+									"    pm.collectionVariables.set(\"nameAction\", name);\r",
+									"    pm.expect(name).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action updated_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('updated_at');\r",
+									"    let updatedAt = jsonData.updated_at;\r",
+									"    pm.collectionVariables.set(\"updatedAtAction\", updatedAt);\r",
+									"    pm.expect(updatedAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Action created_at is not empty (storaged)\", function () {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('created_at');\r",
+									"    let createdAt = jsonData.created_at;\r",
+									"    pm.collectionVariables.set(\"createdAtAction\", createdAt);\r",
+									"    pm.expect(createdAt).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Extract and store ID\", function () {\r",
+									"    let scope = pm.collectionVariables;\r",
+									"    let keyName = \"iamActionIds\";\r",
+									"    let jsonData = pm.response.json();\r",
+									"    let resourceIds = JSON.parse(scope.get(keyName) || \"[]\");\r",
+									"    pm.expect(jsonData.id).to.not.be.null;\r",
+									"    pm.expect(jsonData.id).to.not.be.undefined;\r",
+									"    if(jsonData.id != null & jsonData.id != undefined )\r",
+									"    {\r",
+									"    resourceIds.push(jsonData.id);\r",
+									"    scope.set(keyName, JSON.stringify(resourceIds));\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        resourceIds = resourceIds;\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"test14\",\r\n  \"description\": \"Test6\",\r\n  \"payload\": { \"name\":\"test\"},\r\n  \"status\": 1,\r\n  \"group\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Cloned]/v1/action/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"event name was cloned correctly\", function () {\r",
+									"    if (!pm.response.responseSize) return null;\r",
+									"    let jsonData = pm.response.json();\r",
+									"    if (!jsonData) return null;\r",
+									"    let requestBody = pm.collectionVariables.get(\"requestBodyPostAction\");\r",
+									"    if (!requestBody || requestBody.trim() === \"\") {\r",
+									"        requestBody = null;\r",
+									"    }\r",
+									"    let requestBodyJson = requestBody ? JSON.parse(requestBody) : null;\r",
+									"    let cloneName = jsonData.name;\r",
+									"    let originName = pm.collectionVariables.get(\"name\");\r",
+									"    let requestName = requestBodyJson ? requestBodyJson.name: null;\r",
+									"    if (!requestName) {\r",
+									"        pm.expect(cloneName).to.be.eql(originName);\r",
+									"    } else {\r",
+									"        pm.expect(cloneName).to.be.eql(requestName);\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Obtener el body del request como un objeto\r",
+									"let requestBodyPost = pm.request.body.raw;\r",
+									"\r",
+									"// Almacenar el body en una variable de entorno (como JSON string)\r",
+									"pm.collectionVariables.set(\"requestBodyPostAction\", requestBodyPost);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"cloned\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/v1/action/{{eventId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v1",
+								"action",
+								"{{eventId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -1261,9 +2981,64 @@
 			"value": ""
 		},
 		{
-			"key": "access_token",
-			"value": "",
-			"disabled": true
+			"key": "status",
+			"value": ""
+		},
+		{
+			"key": "description",
+			"value": ""
+		},
+		{
+			"key": "group",
+			"value": ""
+		},
+		{
+			"key": "requestBodyPutSimple",
+			"value": ""
+		},
+		{
+			"key": "statusAction",
+			"value": ""
+		},
+		{
+			"key": "descriptionAction",
+			"value": ""
+		},
+		{
+			"key": "groupAction",
+			"value": ""
+		},
+		{
+			"key": "idAction",
+			"value": ""
+		},
+		{
+			"key": "nameAction",
+			"value": ""
+		},
+		{
+			"key": "updatedAtAction",
+			"value": ""
+		},
+		{
+			"key": "createdAtAction",
+			"value": ""
+		},
+		{
+			"key": "iamActionIds",
+			"value": ""
+		},
+		{
+			"key": "requestBodyPutSimpleAction",
+			"value": ""
+		},
+		{
+			"key": "requestBodyPutAction",
+			"value": ""
+		},
+		{
+			"key": "requestBodyPostAction",
+			"value": ""
 		}
 	]
 }
